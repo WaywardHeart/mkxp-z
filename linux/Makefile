@@ -184,8 +184,25 @@ $(DOWNLOADS)/libpng/configure:
 # SDL2
 sdl2: init_dirs $(LIBDIR)/libSDL2.a
 
-$(LIBDIR)/libSDL2.a: $(DOWNLOADS)/sdl2/cmakebuild/Makefile
-	cd $(DOWNLOADS)/sdl2/cmakebuild; \
+$(LIBDIR)/libSDL2.a: $(DOWNLOADS)/sdl2/Makefile
+	cd $(DOWNLOADS)/sdl2; \
+	make -j$(NPROC); make install;
+
+$(DOWNLOADS)/sdl2/Makefile: $(DOWNLOADS)/sdl2/configure
+	cd $(DOWNLOADS)/sdl2; \
+	$(CONFIGURE) --enable-static=true --enable-shared=false $(SDL_FLAGS)
+
+$(DOWNLOADS)/sdl2/configure: $(DOWNLOADS)/sdl2/autogen.sh
+	cd $(DOWNLOADS)/sdl2; ./autogen.sh
+
+$(DOWNLOADS)/sdl2/autogen.sh:
+	$(CLONE) $(GITHUB)/Eblo/SDL $(DOWNLOADS)/sdl2 -b mkxp-z-angle-linux
+
+# SDL2 (Image)
+sdl2image: init_dirs sdl2 libpng libjpeg $(LIBDIR)/libSDL2_image.a
+
+$(LIBDIR)/libSDL2_image.a: $(DOWNLOADS)/sdl2_image/Makefile
+	cd $(DOWNLOADS)/sdl2_image; \
 	make -j$(NPROC); make install
 
 $(DOWNLOADS)/sdl2/cmakebuild/Makefile: $(DOWNLOADS)/sdl2/CMakeLists.txt
