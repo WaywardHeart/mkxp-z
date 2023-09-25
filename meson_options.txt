@@ -20,4 +20,4 @@ option('steamshim_debug', type: 'boolean', value: false, description: 'Whether t
 
 option('hide_console', type: 'boolean', value: false, description: 'Disabling the debug console outright.')
 
-option('gfx_backend', type: 'combo', value: 'gl', choices: ['gl', 'gles'], description: 'Graphics rendering API to use.')
+option('gfx_backend', type: 'combo', value: 'gles', choices: ['gl', 'gles'], description: 'Graphics rendering API to use.')

@@ -125,7 +125,7 @@ subdir('binding')
 subdir('shader')
 subdir('assets')
 
-global_include_dirs += include_directories('src', 'binding')
+global_include_dirs += include_directories('src', 'binding', 'vendor/ANGLE')
 
 rpath = ''
 

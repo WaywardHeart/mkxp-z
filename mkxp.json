@@ -139,23 +139,19 @@
     // "solidFonts": ["Arial", "Times New Roman"]
 
 
-    // Prefer the use of Metal over OpenGL on macOS.
-    // This defaults to false under Intel machines,
-    // and true under ARM/Apple Silicon ones (which
-    // merely emulate OpenGL anyway)
+    // Prefer the use of Metal on macOS and vulkan on Linux.
     //
     // Try changing this if you have graphics problems.
-    // Metal is far better, but ANGLE may not initialize correctly
-    // on some Intel machines.
+    // ANGLE may not initialize correctly on some Intel machines.
     //
     // On Apple Silicon it's probably better to not touch it.
     // Emulated OpenGL is buggy, and it will also break things like
     // the Steam overlay.
-    // (default: true if Apple Silicon, false if Intel)
+    // (default: opengl)
     //
-    // "preferMetalRenderer": true,
-    
-    
+    // "angleRenderer": "opengl",
+
+
     // Work around buggy graphics drivers which don't
     // properly synchronize texture access, most
     // apparent when text doesn't show up or the map

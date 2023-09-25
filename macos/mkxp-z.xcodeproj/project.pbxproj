@@ -1035,8 +1035,8 @@
 		3B5A845C256A465700BAF2E5 /* system.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = system.h; sourceTree = "<group>"; };
 		3B5A845D256A465700BAF2E5 /* systemImpl.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = systemImpl.cpp; sourceTree = "<group>"; };
 		3B5A8463256A46B200BAF2E5 /* systemImplApple.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = systemImplApple.mm; sourceTree = "<group>"; };
-		3B5E1F0925A881FB0086FFDC /* libEGL.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libEGL.dylib; path = Dependencies/Frameworks/ANGLE/libEGL.dylib; sourceTree = "<group>"; };
-		3B5E1F0A25A881FB0086FFDC /* libGLESv2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLESv2.dylib; path = Dependencies/Frameworks/ANGLE/libGLESv2.dylib; sourceTree = "<group>"; };
+		3B5E1F0925A881FB0086FFDC /* libEGL.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libEGL.dylib; path = ../vendor/ANGLE/libEGL.dylib; sourceTree = "<group>"; };
+		3B5E1F0A25A881FB0086FFDC /* libGLESv2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLESv2.dylib; path = ../vendor/ANGLE/libGLESv2.dylib; sourceTree = "<group>"; };
 		3B609374268274CE0038E9D6 /* encoding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = encoding.h; sourceTree = "<group>"; };
 		3BA08EA4256641ED00449CFF /* Assets.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Assets.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BA08EA6256641EE00449CFF /* Assets.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Assets.plist; sourceTree = "<group>"; };
@@ -2732,7 +2732,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Dependencies/Frameworks/ANGLE",
+					"../vendor/ANGLE",
 					"$(PROJECT_DIR)/Dependencies/build-macosx-x86_64/lib",
 				);
 				MARKETING_VERSION = 2.4.2;
@@ -2805,7 +2805,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Dependencies/Frameworks/ANGLE",
+					"../vendor/ANGLE",
 					"$(PROJECT_DIR)/Dependencies/build-macosx-x86_64/lib",
 				);
 				MARKETING_VERSION = 2.4.2;
@@ -3020,7 +3020,7 @@
 					"$(DEPENDENCY_SEARCH_PATH)/include/AL",
 					"$(DEPENDENCY_SEARCH_PATH)/include/openssl",
 					"$(DEPENDENCY_SEARCH_PATH)/include/uchardet",
-					"$(PROJECT_DIR)/Dependencies/Frameworks/ANGLE",
+					"../vendor/ANGLE",
 				);
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3028,7 +3028,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Dependencies/Frameworks/ANGLE",
+					"../vendor/ANGLE",
 					"$(PROJECT_DIR)/Dependencies/build-macosx-x86_64/lib",
 					"$(PROJECT_DIR)/Dependencies/build-macosx-universal/lib",
 				);
@@ -3107,7 +3107,7 @@
 					"$(DEPENDENCY_SEARCH_PATH)/include/AL",
 					"$(DEPENDENCY_SEARCH_PATH)/include/openssl",
 					"$(DEPENDENCY_SEARCH_PATH)/include/uchardet",
-					"$(PROJECT_DIR)/Dependencies/Frameworks/ANGLE",
+					"../vendor/ANGLE",
 				);
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3115,7 +3115,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Dependencies/Frameworks/ANGLE",
+					"../vendor/ANGLE",
 					"$(PROJECT_DIR)/Dependencies/build-macosx-x86_64/lib",
 					"$(PROJECT_DIR)/Dependencies/build-macosx-universal/lib",
 				);
@@ -3193,7 +3193,7 @@
 					"$(DEPENDENCY_SEARCH_PATH)/include/AL",
 					"$(DEPENDENCY_SEARCH_PATH)/include/openssl",
 					"$(DEPENDENCY_SEARCH_PATH)/include/uchardet",
-					"$(PROJECT_DIR)/Dependencies/Frameworks/ANGLE",
+					"../vendor/ANGLE",
 				);
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3201,7 +3201,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Dependencies/Frameworks/ANGLE",
+					"../vendor/ANGLE",
 					"$(PROJECT_DIR)/Dependencies/build-macosx-universal/lib",
 					"$(PROJECT_DIR)/Dependencies/build-macosx-x86_64/lib",
 				);
@@ -3274,7 +3274,7 @@
 					"$(DEPENDENCY_SEARCH_PATH)/include/AL",
 					"$(DEPENDENCY_SEARCH_PATH)/include/openssl",
 					"$(DEPENDENCY_SEARCH_PATH)/include/uchardet",
-					"$(PROJECT_DIR)/Dependencies/Frameworks/ANGLE",
+					"../vendor/ANGLE",
 				);
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3282,7 +3282,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Dependencies/Frameworks/ANGLE",
+					"../vendor/ANGLE",
 					"$(PROJECT_DIR)/Dependencies/build-macosx-universal/lib",
 					"$(PROJECT_DIR)/Dependencies/build-macosx-x86_64/lib",
 				);
@@ -3352,7 +3352,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Dependencies/Frameworks/ANGLE",
+					"../vendor/ANGLE",
 					"$(PROJECT_DIR)/Dependencies/build-macosx-x86_64/lib",
 				);
 				MARKETING_VERSION = 2.4.2;
@@ -3419,7 +3419,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Dependencies/Frameworks/ANGLE",
+					"../vendor/ANGLE",
 					"$(PROJECT_DIR)/Dependencies/build-macosx-x86_64/lib",
 				);
 				MARKETING_VERSION = 2.4.2;
@@ -3485,7 +3485,7 @@
 					"$(DEPENDENCY_SEARCH_PATH)/include/AL",
 					"$(DEPENDENCY_SEARCH_PATH)/include/openssl",
 					"$(DEPENDENCY_SEARCH_PATH)/include/uchardet",
-					"$(PROJECT_DIR)/Dependencies/Frameworks/ANGLE",
+					"../vendor/ANGLE",
 				);
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
@@ -3555,7 +3555,7 @@
 					"$(DEPENDENCY_SEARCH_PATH)/include/AL",
 					"$(DEPENDENCY_SEARCH_PATH)/include/openssl",
 					"$(DEPENDENCY_SEARCH_PATH)/include/uchardet",
-					"$(PROJECT_DIR)/Dependencies/Frameworks/ANGLE",
+					"../vendor/ANGLE",
 				);
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
