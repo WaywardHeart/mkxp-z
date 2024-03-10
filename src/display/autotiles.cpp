@@ -6,7 +6,7 @@ half pieces and rearranged to form autotiles. This
 pre-calculates all of the rects for these slices.
 */
 static const float tileSize = 16;
-static const int halfTile = tileSize / 2;
+static const float halfTile = tileSize / 2;
 
 extern const StaticRect autotileRects[] =
 {
