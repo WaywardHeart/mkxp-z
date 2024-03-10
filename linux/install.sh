@@ -19,6 +19,9 @@ get_dep ruby
 get_dep libcrypt
 get_dep libbsd
 
+# Required by Steam Deck(?)
+get_dep libffi
+
 if [ -n "$STEAM" ]; then
   echo "Copying steam_api..."
   cp "$STEAM/libsteam_api.so" "${MESON_INSTALL_PREFIX}/usr/lib"
