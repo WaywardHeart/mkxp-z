@@ -59,18 +59,16 @@ static const int autotileH = 4 * TileAtlas::tileSize;
 
 static const int autotileCount = 7;
 
-//static const int atFrames = 8;
 static const int atFrames = 4;
 static const int atFrameDur = 15;
 static const int atAreaW = autotileW * atFrames;
 static const int atAreaH = autotileH * autotileCount;
 
-//static const int tsLaneW = tilesetW / 1;
 static const int tsLaneW = tilesetW / 2;
 
 /* Map viewport size */
-static const int viewpW = 1280 / TileAtlas::tileSize;
-static const int viewpH = 720 / TileAtlas::tileSize;
+static const int viewpW = 80; //21
+static const int viewpH = 45; //16
 
 static const size_t zlayersMax = viewpH + 5;
 
@@ -309,6 +307,7 @@ struct TilemapPrivate
 		//uint32_t aniIdx;
 		uint8_t frameIdx;
 		uint8_t aniIdx;
+		
 	} tiles;
 
 	FlashMap flashMap;
@@ -464,6 +463,7 @@ struct TilemapPrivate
 
 			if (autotiles[i]->megaSurface())
 				continue;
+
 
 			usableATs.push_back(i);
 
@@ -839,7 +839,6 @@ struct TilemapPrivate
 			minY = -oy;
 
 		// There could be off-by-one issues in these couple sections.
-		// Note for the future: is it possible this is caused the change commented on line 808?
 		int maxX = viewpW;
 		int maxY = viewpH;
 		if (ox + maxX >= mapW)
@@ -908,10 +907,7 @@ struct TilemapPrivate
 			tilemapShader.bind();
 			tilemapShader.applyViewportProj();
 			// TILEMAP ZOOM
-			//trans.setGlobalOffset(Vec2i(0,-1));
 			tilemapShader.setTilemapMat(trans.getMatrix());
-			// tilemapShader.setAniIndex(tiles.aniIdx / atFrameDur);
-			// tilemapShader.setATFrames(atlas.nATFrames);
 			tilemapShader.setAniIndex(tiles.frameIdx);
 			shaderVar = &tilemapShader;
 		}
@@ -1117,6 +1113,10 @@ void GroundLayer::draw()
 {
 	if (p->groundVert.size() == 0)
 		return;
+
+	// Check this -- removed with tilemap frag removal
+	//if (!p->opacity)
+	//	return;
 
 	ShaderBase *shader;
 

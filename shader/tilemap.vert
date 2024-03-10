@@ -20,11 +20,11 @@ void main()
 {
     vec2 tex = texCoord;
 
-    lowp float pred = float(tex.x <= atAreaW && tex.y <= atAreaH);
-    //lowp int pred = int(tex.x <= atAreaW && tex.y <= atAreaH);
+    //lowp float pred = float(tex.x <= atAreaW && tex.y <= atAreaH);
+    lowp int pred = int(tex.x <= atAreaW && tex.y <= atAreaH);
 
-    tex.x += aniIndex * atAniOffset * pred;
-    //tex.x += aniIndex * atAniOffset * float(pred);
+    //tex.x += aniIndex * atAniOffset * pred;
+    tex.x += aniIndex * atAniOffset * float(pred);
 
     gl_Position = projMat * tilemapMat * vec4(position + translation, 0, 1);
 

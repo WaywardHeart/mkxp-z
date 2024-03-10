@@ -45,15 +45,16 @@ static const int atAreaW = tileSize*3*4;
 /* Autotile area height */
 //static const int atAreaH = 32*4*7 + atBuffer;
 static const int atAreaH = tileSize*4*7 + atBuffer;
+
+static const int tilesetW = tileSize*8;
+//static const int tsLaneW = tilesetW / 1;
+static const int tsLaneW = tilesetW / 2;
+
 //static const int underAtLanes = atAreaW / tsLaneW + !!(atAreaW % tsLaneW);
 
 /* Autotile area */
 //static const int atArea = underAtLanes * tsLaneW * atAreaH;
 static const int atArea = atAreaW * atAreaH;
-
-static const int tilesetW = tileSize*8;
-//static const int tsLaneW = tilesetW / 1;
-static const int tsLaneW = tilesetW / 2;
 
 static int freeArea(int width, int height)
 {
@@ -111,9 +112,10 @@ static ColumnVec calcDstCols(int atlasW, int atlasH)
 
 	//const int remCols = atlasW / tsLaneW - underAtLanes;
 
+	// CHECK THIS -- NOT PRESENT IN LAST WORKING ZOOM BUILD
 	if (atlasW <= atAreaW)
 		return cols;
-
+	
 	const int remCols = (atlasW - atAreaW) / tsLaneW;
 
 	// if (remCols > 0)
