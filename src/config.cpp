@@ -306,8 +306,12 @@ try { exp } catch (...) {}
     SE.sourceCount = clamp(SE.sourceCount, 1, 64);
     BGM.trackCount = clamp(BGM.trackCount, 1, 16);
     
-    // Determine whether to open a console window on... Windows
+    // Determine whether to open a console window on Windows, with force disable
+#ifndef HIDE_WINDOWS_CONSOLE
     winConsole = getEnvironmentBool("MKXPZ_WINDOWS_CONSOLE", editor.debug);
+#else
+    winConsole = false;
+#endif
     
 #ifdef __APPLE__
     // Determine whether to use the Metal renderer on macOS
