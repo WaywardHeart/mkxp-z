@@ -498,8 +498,11 @@ void Sprite::setBlendType(int type)
         case BlendAddition :
             p->blendType = BlendAddition;
             return;
-        case BlendSubstraction :
-            p->blendType = BlendSubstraction;
+        case BlendSubtraction :
+            p->blendType = BlendSubtraction;
+            return;
+        case BlendMultiply :
+            p->blendType = BlendMultiply;
             return;
     }
 }
@@ -530,8 +533,11 @@ void Sprite::setPatternBlendType(int type)
         case BlendAddition :
             p->patternBlendType = BlendAddition;
             return;
-        case BlendSubstraction :
-            p->patternBlendType = BlendSubstraction;
+        case BlendSubtraction :
+            p->patternBlendType = BlendSubtraction;
+            return;
+        case BlendMultiply :
+            p->patternBlendType = BlendMultiply;
             return;
     }
 }
