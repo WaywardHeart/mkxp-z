@@ -24,7 +24,6 @@
 #include "sharedstate.h"
 #include "glstate.h"
 #include "quad.h"
-#include "config.h"
 
 namespace GLMeta
 {
@@ -145,22 +144,10 @@ static void _blitBegin(FBO::ID fbo, const Vec2i &size)
 		FBO::bind(fbo);
 		glState.viewport.pushSet(IntRect(0, 0, size.x, size.y));
 
-		if (shState->config().lanczos3Scaling)
-		{
-			Lanczos3Shader &shader = shState->shaders().lanczos3;
-			shader.bind();
-			shader.applyViewportProj();
-			shader.setTranslation(Vec2i());
-			shader.setTexSize(Vec2i(size.x, size.y));
-		}
-		else
-		{
-			SimpleShader &shader = shState->shaders().simple;
-			shader.bind();
-			shader.applyViewportProj();
-			shader.setTranslation(Vec2i());
-			shader.setTexSize(Vec2i(size.x, size.y));
-		}
+		SimpleShader &shader = shState->shaders().simple;
+		shader.bind();
+		shader.applyViewportProj();
+		shader.setTranslation(Vec2i());
 	}
 }
 
@@ -182,18 +169,8 @@ void blitSource(TEXFBO &source)
 	}
 	else
 	{
-		if (shState->config().lanczos3Scaling)
-		{
-			Lanczos3Shader &shader = shState->shaders().lanczos3;
-			shader.bind();
-			shader.setTexSize(Vec2i(source.width, source.height));
-		}
-		else
-		{
-			SimpleShader &shader = shState->shaders().simple;
-			shader.bind();
-			shader.setTexSize(Vec2i(source.width, source.height));
-		}
+		SimpleShader &shader = shState->shaders().simple;
+		shader.setTexSize(Vec2i(source.width, source.height));
 		TEX::bind(source.tex);
 	}
 }

@@ -43,7 +43,6 @@ struct Config {
     bool fullscreen;
     bool fixedAspectRatio;
     bool smoothScaling;
-    bool lanczos3Scaling;
     bool vsync;
     
     int defScreenW;
