@@ -324,10 +324,10 @@ try { exp } catch (...) {}
 
 static void setupScreenSize(Config &conf) {
     if (conf.defScreenW <= 0)
-        conf.defScreenW = (conf.rgssVersion == 1 ? 640 : 544);
+        conf.defScreenW = 1280;
     
     if (conf.defScreenH <= 0)
-        conf.defScreenH = (conf.rgssVersion == 1 ? 480 : 416);
+        conf.defScreenH = 720;
 }
 
 bool Config::fontIsSolid(const char *fontName) const {
