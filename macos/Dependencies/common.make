@@ -45,7 +45,7 @@ CMAKE_ARGS := \
 RUBY_CONFIGURE_ARGS := \
 	--enable-install-static-library \
 	--enable-shared \
-	--with-out-ext=fiddle,gdbm,win32ole,win32 \
+	--with-out-ext=fiddle,gdbm,win32ole,win32,ripper \
 	--with-static-linked-ext \
 	--disable-rubygems \
 	--disable-install-doc \
@@ -179,9 +179,14 @@ $(DOWNLOADS)/libpng/configure:
 # SDL2
 sdl2: init_dirs $(LIBDIR)/libSDL2.a
 
-$(LIBDIR)/libSDL2.a: $(DOWNLOADS)/sdl2/Makefile
+$(LIBDIR)/libSDL2.a: $(DOWNLOADS)/sdl2/cmakebuild/Makefile
+	cd $(DOWNLOADS)/sdl2/cmakebuild; \
+	make -j$(NPROC); make install
+
+$(DOWNLOADS)/sdl2/cmakebuild/Makefile: $(DOWNLOADS)/sdl2/CMakeLists.txt
 	cd $(DOWNLOADS)/sdl2; \
-	make -j$(NPROC); make install;
+	mkdir cmakebuild; cd cmakebuild; \
+	$(CMAKE) -DBUILD_SHARED_LIBS=no
 
 $(DOWNLOADS)/sdl2/CMakeLists.txt:
 	$(CLONE) $(GITHUB)/mkxp-z/SDL $(DOWNLOADS)/sdl2 -b mkxp-z-2.28.1
@@ -201,11 +206,14 @@ $(DOWNLOADS)/sdl2_image/cmakebuild/Makefile: $(DOWNLOADS)/sdl2_image/CMakeLists.
 	-DSDL2IMAGE_PNG_SAVE=yes \
 	-DSDL2IMAGE_PNG_SHARED=no \
 	-DSDL2IMAGE_JPG_SHARED=no \
-	-DSDL2IMAGE_BACKEND_IMAGEIO=no
+	-DSDL2IMAGE_BACKEND_IMAGEIO=no \
+	-DSDL2IMAGE_VENDORED=yes
 	
 
 $(DOWNLOADS)/sdl2_image/CMakeLists.txt:
-	$(CLONE) $(GITHUB)/mkxp-z/SDL_image $(DOWNLOADS)/sdl2_image -b mkxp-z
+	$(CLONE) $(GITHUB)/mkxp-z/SDL_image $(DOWNLOADS)/sdl2_image -b mkxp-z; \
+	cd $(DOWNLOADS)/sdl2_image; \
+	./external/download.sh
 
 
 # SDL_sound
