@@ -40,16 +40,14 @@ typedef std::vector<Column> ColumnVec;
 /* Buffer between autotile area and tileset */
 static const int atBuffer = 32;
 /* Autotile area width */
-static const int atAreaW = 32*3*8;
+static const int atAreaW = 96*4;
 /* Autotile area height */
-static const int atAreaH = 32*4*7 + atBuffer;
-
-static const int tilesetW = 32*8;
-static const int tsLaneW = tilesetW / 1;
-static const int underAtLanes = atAreaW / tsLaneW + !!(atAreaW % tsLaneW);
-
+static const int atAreaH = 128*7 + atBuffer;
 /* Autotile area */
-static const int atArea = underAtLanes * tsLaneW * atAreaH;
+static const int atArea = atAreaW * atAreaH;
+
+static const int tilesetW = 256;
+static const int tsLaneW = tilesetW / 2;
 
 static int freeArea(int width, int height)
 {
@@ -58,7 +56,7 @@ static int freeArea(int width, int height)
 
 Vec2i minSize(int tilesetH, int maxAtlasSize)
 {
-	int width = underAtLanes * tsLaneW;
+	int width = atAreaW;
 	int height = atAreaH;
 
 	const int tsArea = tilesetW * tilesetH;
@@ -83,10 +81,10 @@ Vec2i minSize(int tilesetH, int maxAtlasSize)
 static ColumnVec calcSrcCols(int tilesetH)
 {
 	ColumnVec cols;
-	// cols.reserve(2);
+	cols.reserve(2);
 
 	cols.push_back(Column(0, 0, tilesetH));
-	// cols.push_back(Column(tsLaneW, 0, tilesetH));
+	cols.push_back(Column(tsLaneW, 0, tilesetH));
 
 	return cols;
 }
@@ -94,19 +92,21 @@ static ColumnVec calcSrcCols(int tilesetH)
 static ColumnVec calcDstCols(int atlasW, int atlasH)
 {
 	ColumnVec cols;
-	cols.reserve(underAtLanes);
+	cols.reserve(3);
 
 	/* Columns below the autotile area */
 	const int underAt = atlasH - atAreaH;
 
-	for (int i = 0; i < underAtLanes; ++i)
+	for (int i = 0; i < 3; ++i)
 		cols.push_back(Column(i*tsLaneW, atAreaH, underAt));
 
-	const int remCols = atlasW / tsLaneW - underAtLanes;
+	if (atlasW <= atAreaW)
+		return cols;
 
-	if (remCols > 0)
-		for (int i = 0; i < remCols; ++i)
-			cols.push_back(Column((underAtLanes+i)*tsLaneW, 0, atlasH));
+	const int remCols = (atlasW - atAreaW) / tsLaneW;
+
+	for (int i = 0; i < remCols; ++i)
+		cols.push_back(Column(i*tsLaneW + atAreaW, 0, atlasH));
 
 	return cols;
 }
@@ -178,17 +178,17 @@ Vec2i tileToAtlasCoor(int tileX, int tileY, int tilesetH, int atlasH)
 	int longlaneH = atlasH;
 	int shortlaneH = longlaneH - atAreaH;
 
-	int longlaneOffset = shortlaneH * underAtLanes;
+	int longlaneOffset = shortlaneH * 3;
 
 	int laneIdx = 0;
 	int atlasY = 0;
 
 	/* Check if we're inside the 2nd lane */
-	// if (laneX >= tsLaneW)
-	// {
-	// 	laneY += tilesetH;
-	// 	laneX -= tsLaneW;
-	// }
+	if (laneX >= tsLaneW)
+	{
+		laneY += tilesetH;
+		laneX -= tsLaneW;
+	}
 
 	if (laneY < longlaneOffset)
 	{
@@ -200,7 +200,7 @@ Vec2i tileToAtlasCoor(int tileX, int tileY, int tilesetH, int atlasH)
 	{
 		/* Right of autotile area */
 		int _y = laneY - longlaneOffset;
-		laneIdx = underAtLanes + _y / longlaneH;
+		laneIdx = 3 + _y / longlaneH;
 		atlasY = _y % longlaneH;
 	}
 

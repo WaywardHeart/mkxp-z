@@ -30,9 +30,6 @@ class Viewport;
 class Bitmap;
 class Table;
 
-struct Color;
-struct Tone;
-
 struct TilemapPrivate;
 
 class Tilemap : public Disposable
@@ -68,13 +65,6 @@ public:
 	DECL_ATTR( Visible,    bool      )
 	DECL_ATTR( OX,         int       )
 	DECL_ATTR( OY,         int       )
-
-	DECL_ATTR( Opacity,   int     )
-	DECL_ATTR( BlendType, int     )
-	DECL_ATTR( Color,     Color&  )
-	DECL_ATTR( Tone,      Tone&   )
-
-	void initDynAttribs();
 
 private:
 	TilemapPrivate *p;

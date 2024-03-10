@@ -72,46 +72,39 @@ DEF_ALLOCFUNC(Tilemap);
 #endif
 
 RB_METHOD(tilemapInitialize) {
-    Tilemap *t;
-    
-    /* Get parameters */
-    VALUE viewportObj = Qnil;
-    Viewport *viewport = 0;
-    
-    rb_get_args(argc, argv, "|o", &viewportObj RB_ARG_END);
-    
-    if (!NIL_P(viewportObj))
-        viewport = getPrivateDataCheck<Viewport>(viewportObj, ViewportType);
-    
-    GFX_LOCK;
-    /* Construct object */
-    t = new Tilemap(viewport);
-    
-    rb_iv_set(self, "viewport", viewportObj);
-    
-    setPrivateData(self, t);
-    
-    t->initDynAttribs();
-    
-    wrapProperty(self, &t->getAutotiles(), "autotiles", TilemapAutotilesType);
-    
-    wrapProperty(self, &t->getColor(), "color", ColorType);
-    wrapProperty(self, &t->getTone(), "tone", ToneType);
-    
-    VALUE autotilesObj = rb_iv_get(self, "autotiles");
-    
-    VALUE ary = rb_ary_new2(7);
-    for (int i = 0; i < 7; ++i)
-        rb_ary_push(ary, Qnil);
-    
-    rb_iv_set(autotilesObj, "array", ary);
-    
-    /* Circular reference so both objects are always
-     * alive at the same time */
-    rb_iv_set(autotilesObj, "tilemap", self);
-    
-    GFX_UNLOCK;
-    return self;
+  Tilemap *t;
+
+  /* Get parameters */
+  VALUE viewportObj = Qnil;
+  Viewport *viewport = 0;
+
+  rb_get_args(argc, argv, "|o", &viewportObj RB_ARG_END);
+
+  if (!NIL_P(viewportObj))
+    viewport = getPrivateDataCheck<Viewport>(viewportObj, ViewportType);
+
+  /* Construct object */
+  t = new Tilemap(viewport);
+
+  setPrivateData(self, t);
+
+  rb_iv_set(self, "viewport", viewportObj);
+
+  wrapProperty(self, &t->getAutotiles(), "autotiles", TilemapAutotilesType);
+
+  VALUE autotilesObj = rb_iv_get(self, "autotiles");
+
+  VALUE ary = rb_ary_new2(7);
+  for (int i = 0; i < 7; ++i)
+    rb_ary_push(ary, Qnil);
+
+  rb_iv_set(autotilesObj, "array", ary);
+
+  /* Circular reference so both objects are always
+   * alive at the same time */
+  rb_iv_set(autotilesObj, "tilemap", self);
+
+  return self;
 }
 
 RB_METHOD(tilemapGetAutotiles) {
@@ -147,16 +140,10 @@ DEF_GFX_PROP_OBJ_REF(Tilemap, Table, MapData, "map_data")
 DEF_GFX_PROP_OBJ_REF(Tilemap, Table, FlashData, "flash_data")
 DEF_GFX_PROP_OBJ_REF(Tilemap, Table, Priorities, "priorities")
 
-DEF_GFX_PROP_OBJ_VAL(Tilemap, Color, Color, "color")
-DEF_GFX_PROP_OBJ_VAL(Tilemap, Tone, Tone, "tone")
-
-DEF_GFX_PROP_B(Tilemap, Visible)
+DEF_PROP_B(Tilemap, Visible)
 
 DEF_GFX_PROP_I(Tilemap, OX)
 DEF_GFX_PROP_I(Tilemap, OY)
-
-DEF_GFX_PROP_I(Tilemap, Opacity)
-DEF_GFX_PROP_I(Tilemap, BlendType)
 
 void tilemapBindingInit() {
     VALUE klass = rb_define_class("TilemapAutotiles", rb_cObject);
@@ -173,25 +160,20 @@ void tilemapBindingInit() {
 #else
     rb_define_alloc_func(klass, TilemapAllocate);
 #endif
-    
-    disposableBindingInit<Tilemap>(klass);
-    
-    _rb_define_method(klass, "initialize", tilemapInitialize);
-    _rb_define_method(klass, "autotiles", tilemapGetAutotiles);
-    _rb_define_method(klass, "update", tilemapUpdate);
-    
-    _rb_define_method(klass, "viewport", tilemapGetViewport);
-    
-    INIT_PROP_BIND(Tilemap, Tileset, "tileset");
-    INIT_PROP_BIND(Tilemap, MapData, "map_data");
-    INIT_PROP_BIND(Tilemap, FlashData, "flash_data");
-    INIT_PROP_BIND(Tilemap, Priorities, "priorities");
-    INIT_PROP_BIND(Tilemap, Visible, "visible");
-    INIT_PROP_BIND(Tilemap, OX, "ox");
-    INIT_PROP_BIND(Tilemap, OY, "oy");
-    
-    INIT_PROP_BIND(Tilemap, Opacity, "opacity");
-    INIT_PROP_BIND(Tilemap, BlendType, "blend_type");
-    INIT_PROP_BIND(Tilemap, Color, "color");
-    INIT_PROP_BIND(Tilemap, Tone, "tone");
+
+  disposableBindingInit<Tilemap>(klass);
+
+  _rb_define_method(klass, "initialize", tilemapInitialize);
+  _rb_define_method(klass, "autotiles", tilemapGetAutotiles);
+  _rb_define_method(klass, "update", tilemapUpdate);
+
+  _rb_define_method(klass, "viewport", tilemapGetViewport);
+
+  INIT_PROP_BIND(Tilemap, Tileset, "tileset");
+  INIT_PROP_BIND(Tilemap, MapData, "map_data");
+  INIT_PROP_BIND(Tilemap, FlashData, "flash_data");
+  INIT_PROP_BIND(Tilemap, Priorities, "priorities");
+  INIT_PROP_BIND(Tilemap, Visible, "visible");
+  INIT_PROP_BIND(Tilemap, OX, "ox");
+  INIT_PROP_BIND(Tilemap, OY, "oy");
 }
