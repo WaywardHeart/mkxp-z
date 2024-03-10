@@ -65,6 +65,9 @@ public:
 	DECL_ATTR( Visible,    bool      )
 	DECL_ATTR( OX,         int       )
 	DECL_ATTR( OY,         int       )
+	// TILEMAP ZOOM
+	DECL_ATTR( ZoomX, 	   float     )
+	DECL_ATTR( ZoomY, 	   float     )
 
 private:
 	TilemapPrivate *p;

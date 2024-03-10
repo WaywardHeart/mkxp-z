@@ -113,7 +113,7 @@ Shader::Shader()
 
 Shader::~Shader()
 {
-	gl.UseProgram(0);
+	//gl.UseProgram(0);
 	gl.DeleteProgram(program);
 	gl.DeleteShader(vertShader);
 	gl.DeleteShader(fragShader);
@@ -603,16 +603,29 @@ TilemapShader::TilemapShader()
 	INIT_SHADER(tilemap, simple, TilemapShader);
 
 	ShaderBase::init();
+	// TILEMAP ZOOM 
+	GET_U(tilemapMat);
 
 	GET_U(aniIndex);
+	//GET_U(atFrames);
+}
+
+// TILEMAP ZOOM 
+void TilemapShader::setTilemapMat(const float value[16])
+{
+	gl.UniformMatrix4fv(u_tilemapMat, 1, GL_FALSE, value);
 }
 
 void TilemapShader::setAniIndex(int value)
 {
+	//gl.Uniform1i(u_aniIndex, value);
 	gl.Uniform1f(u_aniIndex, value);
 }
 
-
+// void TilemapShader::setATFrames(int values[7])
+// {
+// 	gl.Uniform1iv(u_atFrames, 7, values);
+// }
 
 FlashMapShader::FlashMapShader()
 {

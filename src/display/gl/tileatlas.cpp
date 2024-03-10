@@ -15,7 +15,7 @@
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ** GNU General Public License for more details.
 **
-** You should have received a copy of the GNU General Public License
+** You should have received a copy of the GNU General Public License 
 ** along with mkxp.  If not, see <http://www.gnu.org/licenses/>.
 */
 
@@ -38,15 +38,21 @@ struct Column
 typedef std::vector<Column> ColumnVec;
 
 /* Buffer between autotile area and tileset */
-static const int atBuffer = 32;
+static const int atBuffer = tileSize;
 /* Autotile area width */
-static const int atAreaW = 96*4;
+//static const int atAreaW = 32*3*8;
+static const int atAreaW = tileSize*3*4;
 /* Autotile area height */
-static const int atAreaH = 128*7 + atBuffer;
+//static const int atAreaH = 32*4*7 + atBuffer;
+static const int atAreaH = tileSize*4*7 + atBuffer;
+//static const int underAtLanes = atAreaW / tsLaneW + !!(atAreaW % tsLaneW);
+
 /* Autotile area */
+//static const int atArea = underAtLanes * tsLaneW * atAreaH;
 static const int atArea = atAreaW * atAreaH;
 
-static const int tilesetW = 256;
+static const int tilesetW = tileSize*8;
+//static const int tsLaneW = tilesetW / 1;
 static const int tsLaneW = tilesetW / 2;
 
 static int freeArea(int width, int height)
@@ -56,6 +62,7 @@ static int freeArea(int width, int height)
 
 Vec2i minSize(int tilesetH, int maxAtlasSize)
 {
+	//int width = underAtLanes * tsLaneW;
 	int width = atAreaW;
 	int height = atAreaH;
 
@@ -63,7 +70,7 @@ Vec2i minSize(int tilesetH, int maxAtlasSize)
 
 	/* Expand vertically */
 	while (freeArea(width, height) < tsArea && height < maxAtlasSize)
-		height += 32;
+		height += tileSize;
 
 	if (freeArea(width, height) >= tsArea && height <= maxAtlasSize)
 		return Vec2i(width, height);
@@ -92,21 +99,30 @@ static ColumnVec calcSrcCols(int tilesetH)
 static ColumnVec calcDstCols(int atlasW, int atlasH)
 {
 	ColumnVec cols;
+	//cols.reserve(underAtLanes);
 	cols.reserve(3);
 
 	/* Columns below the autotile area */
 	const int underAt = atlasH - atAreaH;
 
+	//for (int i = 0; i < underAtLanes; ++i)
 	for (int i = 0; i < 3; ++i)
 		cols.push_back(Column(i*tsLaneW, atAreaH, underAt));
+
+	//const int remCols = atlasW / tsLaneW - underAtLanes;
 
 	if (atlasW <= atAreaW)
 		return cols;
 
 	const int remCols = (atlasW - atAreaW) / tsLaneW;
 
+	// if (remCols > 0)
+	// 	for (int i = 0; i < remCols; ++i)
+	// 		cols.push_back(Column((underAtLanes+i)*tsLaneW, 0, atlasH));
+
 	for (int i = 0; i < remCols; ++i)
 		cols.push_back(Column(i*tsLaneW + atAreaW, 0, atlasH));
+
 
 	return cols;
 }
@@ -172,12 +188,13 @@ BlitVec calcBlits(int tilesetH, const Vec2i &atlasSize)
 
 Vec2i tileToAtlasCoor(int tileX, int tileY, int tilesetH, int atlasH)
 {
-	int laneX = tileX*32;
-	int laneY = tileY*32;
+	int laneX = tileX*tileSize;
+	int laneY = tileY*tileSize;
 
 	int longlaneH = atlasH;
 	int shortlaneH = longlaneH - atAreaH;
 
+	//int longlaneOffset = shortlaneH * underAtLanes;
 	int longlaneOffset = shortlaneH * 3;
 
 	int laneIdx = 0;
@@ -200,6 +217,7 @@ Vec2i tileToAtlasCoor(int tileX, int tileY, int tilesetH, int atlasH)
 	{
 		/* Right of autotile area */
 		int _y = laneY - longlaneOffset;
+		//laneIdx = underAtLanes + _y / longlaneH;
 		laneIdx = 3 + _y / longlaneH;
 		atlasY = _y % longlaneH;
 	}

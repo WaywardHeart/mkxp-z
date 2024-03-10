@@ -236,9 +236,15 @@ public:
 	TilemapShader();
 
 	void setAniIndex(int value);
+	// TILEMAP ZOOM
+	void setTilemapMat(const float value[16]);
+
+	//void setATFrames(int values[7]);
 
 private:
-	GLint u_aniIndex;
+	// TILEMAP ZOOM
+	//GLint u_aniIndex, u_tone, u_color, u_opacity, u_atFrames;
+	GLint u_aniIndex, u_tilemapMat;
 };
 
 class FlashMapShader : public ShaderBase

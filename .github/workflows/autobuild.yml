@@ -3,7 +3,7 @@ name: Automatic Build
 
 on:
   push:
-    branches: ['dev', 'autobuild']
+    branches: ['dev', 'astravia-dev']
     paths-ignore: ['*.md', '*.json', '*.png']
 
 jobs:

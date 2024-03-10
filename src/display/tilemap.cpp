@@ -36,6 +36,7 @@
 #include "texpool.h"
 #include "quad.h"
 #include "vertex.h"
+#include "transform.h"
 #include "tileatlas.h"
 #include "tilemap-common.h"
 
@@ -52,20 +53,24 @@ extern const StaticRect autotileRects[];
 
 typedef std::vector<SVertex> SVVector;
 
-static const int tilesetW  = 8 * 32;
-static const int autotileW = 3 * 32;
-static const int autotileH = 4 * 32;
+static const int tilesetW  = 8 * TileAtlas::tileSize;
+static const int autotileW = 3 * TileAtlas::tileSize;
+static const int autotileH = 4 * TileAtlas::tileSize;
 
 static const int autotileCount = 7;
 
-static const int atAreaW = autotileW * 4;
+//static const int atFrames = 8;
+static const int atFrames = 4;
+static const int atFrameDur = 15;
+static const int atAreaW = autotileW * atFrames;
 static const int atAreaH = autotileH * autotileCount;
 
+//static const int tsLaneW = tilesetW / 1;
 static const int tsLaneW = tilesetW / 2;
 
 /* Map viewport size */
-static const int viewpW = 21;
-static const int viewpH = 16;
+static const int viewpW = 1280 / TileAtlas::tileSize;
+static const int viewpH = 720 / TileAtlas::tileSize;
 
 static const size_t zlayersMax = viewpH + 5;
 
@@ -155,6 +160,18 @@ static const size_t zlayersMax = viewpH + 5;
  */
 
 /* Autotile animation */
+// static const uint8_t atAnimation[16*8] =
+// {
+//     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+//     2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+//     3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+//     4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+//     5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+//     6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+//     7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7
+// };
+
 static const uint8_t atAnimation[16*4] =
 {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -232,6 +249,8 @@ struct TilemapPrivate
 	Bitmap *autotiles[autotileCount];
 
 	Bitmap *tileset;
+	// TILEMAP ZOOM
+	Transform trans; 
 
 	Table *mapData;
 	Table *priorities;
@@ -256,6 +275,14 @@ struct TilemapPrivate
 
 		/* Indices of animated autotiles */
 		std::vector<uint8_t> animatedATs;
+
+		// /* Whether each autotile is 3x4 or not */
+		// bool smallATs[autotileCount] = {false};
+
+		// /* The number of frames for each autotile */
+		// // int nATFrames[autotileCount] = {1};
+		// uint8_t sATFrames[autotileCount];
+
 	} atlas;
 
 	/* Map viewport position */
@@ -279,6 +306,7 @@ struct TilemapPrivate
 		bool animated;
 
 		/* Animation state */
+		//uint32_t aniIdx;
 		uint8_t frameIdx;
 		uint8_t aniIdx;
 	} tiles;
@@ -405,7 +433,7 @@ struct TilemapPrivate
 		}
 
 		int tsH = tileset->height();
-		atlas.efTilesetH = tsH - (tsH % 32);
+		atlas.efTilesetH = tsH - (tsH % TileAtlas::tileSize);
 
 		atlas.size = TileAtlas::minSize(atlas.efTilesetH, glState.caps.maxTexSize);
 
@@ -421,9 +449,16 @@ struct TilemapPrivate
 		std::vector<uint8_t> &animatedATs = atlas.animatedATs;
 
 		usableATs.clear();
+		// animatedATs.clear();
 
 		for (int i = 0; i < autotileCount; ++i)
 		{
+			// if (nullOrDisposed(autotiles[i]) || autotiles[i]->megaSurface())
+			// {
+			// 	atlas.nATFrames[i] = 1;
+			// 	continue;
+			// }
+
 			if (nullOrDisposed(autotiles[i]))
 				continue;
 
@@ -434,6 +469,20 @@ struct TilemapPrivate
 
 			if (autotiles[i]->width() > autotileW)
 				animatedATs.push_back(i);
+
+			// if (autotiles[i]->height() == 32)
+			// {
+			// 	atlas.smallATs[i] = true;
+			// 	atlas.nATFrames[i] = autotiles[i]->width()/32;
+			// 	animatedATs.push_back(i);
+			// }
+			// else
+			// {
+			// 	atlas.smallATs[i] = false;
+			// 	atlas.nATFrames[i] = autotiles[i]->width()/autotileW;
+			// 	if (atlas.nATFrames[i] > 1)
+			// 		animatedATs.push_back(i);
+			// }
 		}
 
 		tiles.animated = !animatedATs.empty();
@@ -511,15 +560,18 @@ struct TilemapPrivate
 			Bitmap *autotile = autotiles[atInd];
             autotile->ensureNonAnimated();
 
-			int blitW = std::min(autotile->width(), atAreaW);
-			int blitH = std::min(autotile->height(), atAreaH);
+			int atW = autotile->width();
+			int atH = autotile->height();
+			int blitW = std::min(atW, atAreaW);
+			int blitH = std::min(atH, autotileH);
 
 			GLMeta::blitSource(autotile->getGLTypes());
 
+			// if (atW <= autotileW && tiles.animated && !atlas.smallATs[atInd])
 			if (blitW <= autotileW && tiles.animated)
 			{
 				/* Static autotile */
-				for (int j = 0; j < 4; ++j)
+				for (int j = 0; j < atFrames; ++j)
 					GLMeta::blitRectangle(IntRect(0, 0, blitW, blitH),
 					                      Vec2i(autotileW*j, atInd*autotileH));
 			}
@@ -527,7 +579,20 @@ struct TilemapPrivate
 			{
 				/* Animated autotile */
 				GLMeta::blitRectangle(IntRect(0, 0, blitW, blitH),
-				                      Vec2i(0, atInd*autotileH));
+						Vec2i(0, atInd*autotileH));
+
+				// if (atlas.smallATs[atInd])
+				// {
+				// 	int frames = atW/32;
+				// 	for (int j = 0; j < atFrames*autotileH/32; ++j)
+				// 	{
+				// 		GLMeta::blitRectangle(IntRect(32*(j % frames), 0, 32, 32),
+				// 		                      Vec2i(autotileW*(j % atFrames), atInd*autotileH + 32*(j / atFrames)));
+				// 	}
+				// }
+				// else
+				// 	GLMeta::blitRectangle(IntRect(0, 0, blitW, blitH),
+				// 	                      Vec2i(0, atInd*autotileH));
 			}
 		}
 
@@ -637,21 +702,62 @@ struct TilemapPrivate
 		/* Iterate over the 4 tile pieces */
 		for (int i = 0; i < 4; ++i)
 		{
-			FloatRect posRect(x*32, y*32, 16, 16);
+			FloatRect posRect(x*TileAtlas::tileSize, y*TileAtlas::tileSize, TileAtlas::tileSize/2, TileAtlas::tileSize/2);
 			atSelectSubPos(posRect, i);
 
 			FloatRect texRect = pieceRect[i];
 
 			/* Adjust to atlas coordinates */
 			texRect.y += atInd * autotileH;
-
 			SVertex v[4];
 			Quad::setTexPosRect(v, texRect, posRect);
-
+			
 			/* Iterate over 4 vertices */
-			for (size_t i = 0; i < 4; ++i)
-				array->push_back(v[i]);
+			for (size_t j = 0; j < 4; ++j)
+				array->push_back(v[j]);
 		}
+
+
+		// if (!atlas.smallATs[atInd])
+		// {
+		// 	/* Which tile pattern of the autotile [0-47] */
+		// 	int subInd = tileInd % 48;
+
+		// 	const StaticRect *pieceRect = &autotileRects[subInd*4];
+
+		// 	/* Iterate over the 4 tile pieces */
+		// 	for (int i = 0; i < 4; ++i)
+		// 	{
+		// 		FloatRect posRect(x*32, y*32, 16, 16);
+		// 		atSelectSubPos(posRect, i);
+
+		// 		FloatRect texRect = pieceRect[i];
+
+		// 		/* Adjust to atlas coordinates */
+		// 		texRect.y += atInd * autotileH;
+
+		// 		SVertex v[4];
+		// 		Quad::setTexPosRect(v, texRect, posRect);
+
+		// 		/* Iterate over 4 vertices */
+		// 		for (size_t j = 0; j < 4; ++j)
+		// 			array->push_back(v[j]);
+		// 	}
+		// }
+		// else
+		// {
+		// 	FloatRect posRect(x*32, y*32, 32, 32);
+		// 	// !! Not sure why it was like this, but adjusting to fix zoom scaling issues...
+		// 	// Changing this doesn't seem to fix autotiles?
+		// 	FloatRect texRect(0, atInd * autotileH, 32, 32);
+		// 	//FloatRect texRect(0.5f, atInd * autotileH + 0.5f, 31, 31);
+		// 	SVertex v[4];
+		// 	Quad::setTexPosRect(v, texRect, posRect);
+
+		// 	/* Iterate over 4 vertices */
+		// 	for (size_t j = 0; j < 4; ++j)
+		// 		array->push_back(v[j]);
+		// }
 	}
 
 	void handleTile(int x, int y, int z)
@@ -679,6 +785,8 @@ struct TilemapPrivate
 		else
 		{
 			int layerInd = y + prio;
+			if ((size_t)layerInd >= zlayersMax)
+				return;
 			targetArray = &zlayerVert[layerInd];
 		}
 
@@ -694,8 +802,10 @@ struct TilemapPrivate
 		int tileY = tsInd / 8;
 
 		Vec2i texPos = TileAtlas::tileToAtlasCoor(tileX, tileY, atlas.efTilesetH, atlas.size.y);
-		FloatRect texRect((float) texPos.x+0.5f, (float) texPos.y+0.5f, 31, 31);
-		FloatRect posRect(x*32, y*32, 32, 32);
+		// !! Not sure why it was like this, but adjusting to fix zoom scaling issues...
+		FloatRect texRect((float) texPos.x, (float) texPos.y, TileAtlas::tileSize, TileAtlas::tileSize);
+		//FloatRect texRect((float) texPos.x+0.5f, (float) texPos.y+0.5f, 31, 31);
+		FloatRect posRect(x*TileAtlas::tileSize, y*TileAtlas::tileSize, TileAtlas::tileSize, TileAtlas::tileSize);
 
 		SVertex v[4];
 		Quad::setTexPosRect(v, texRect, posRect);
@@ -716,8 +826,31 @@ struct TilemapPrivate
 	{
 		clearQuadArrays();
 
-		for (int x = 0; x < viewpW; ++x)
-			for (int y = 0; y < viewpH; ++y)
+		int ox = viewpPos.x;
+		int oy = viewpPos.y;
+		int mapW = mapData->xSize();
+		int mapH = mapData->ySize();
+
+		int minX = 0;
+		int minY = 0;
+		if (ox < 0)
+			minX = -ox;
+		if (oy < 0)
+			minY = -oy;
+
+		// There could be off-by-one issues in these couple sections.
+		// Note for the future: is it possible this is caused the change commented on line 808?
+		int maxX = viewpW;
+		int maxY = viewpH;
+		if (ox + maxX >= mapW)
+			maxX = mapW - ox - 1;
+		if (oy + maxY >= mapH)
+			maxY = mapH - oy - 1;
+
+		if ((minX > maxX) || (minY > maxY))
+			return;
+		for (int x = minX; x <= maxX; ++x)
+			for (int y = minY; y <= maxY; ++y)
 				for (int z = 0; z < mapData->zSize(); ++z)
 					handleTile(x, y, z);
 	}
@@ -768,15 +901,24 @@ struct TilemapPrivate
 
 	void bindShader(ShaderBase *&shaderVar)
 	{
-		if (tiles.animated)
+		
+		if (tiles.animated || trans.hasScale())
 		{
 			TilemapShader &tilemapShader = shState->shaders().tilemap;
 			tilemapShader.bind();
+			tilemapShader.applyViewportProj();
+			// TILEMAP ZOOM
+			//trans.setGlobalOffset(Vec2i(0,-1));
+			tilemapShader.setTilemapMat(trans.getMatrix());
+			// tilemapShader.setAniIndex(tiles.aniIdx / atFrameDur);
+			// tilemapShader.setATFrames(atlas.nATFrames);
 			tilemapShader.setAniIndex(tiles.frameIdx);
 			shaderVar = &tilemapShader;
 		}
 		else
 		{
+			TilemapShader &tilemapShader = shState->shaders().tilemap;
+			tilemapShader.bind();
 			shaderVar = &shState->shaders().simple;
 			shaderVar->bind();
 		}
@@ -904,7 +1046,7 @@ struct TilemapPrivate
 			updateFlashMapViewport();
 		}
 
-		dispPos = elem.sceneGeo.rect.pos() - wrap(combOrigin, 32);
+		dispPos = elem.sceneGeo.rect.pos() - wrap(combOrigin, TileAtlas::tileSize);
 	}
 
 	void prepare()
@@ -1046,7 +1188,7 @@ void ZLayer::drawInt()
 
 int ZLayer::calculateZ(TilemapPrivate *p, int index)
 {
-	return 32 * (index + p->viewpPos.y + 1) - p->origin.y;
+	return TileAtlas::tileSize * (index + p->viewpPos.y + 1) - p->origin.y;
 }
 
 void ZLayer::initUpdateZ()
@@ -1127,10 +1269,13 @@ void Tilemap::update()
 	if (!p->tiles.animated)
 		return;
 
+	//++p->tiles.aniIdx;
 	p->tiles.frameIdx = atAnimation[p->tiles.aniIdx];
+	//p->tiles.frameIdx = (p->tiles.aniIdx / atFrameDur) % atFrames;
 
 	if (++p->tiles.aniIdx >= atAnimationN)
 		p->tiles.aniIdx = 0;
+
 }
 
 Tilemap::Autotiles &Tilemap::getAutotiles()
@@ -1148,6 +1293,9 @@ DEF_ATTR_RD_SIMPLE(Tilemap, Priorities, Table*, p->priorities)
 DEF_ATTR_RD_SIMPLE(Tilemap, Visible, bool, p->visible)
 DEF_ATTR_RD_SIMPLE(Tilemap, OX, int, p->origin.x)
 DEF_ATTR_RD_SIMPLE(Tilemap, OY, int, p->origin.y)
+// TILEMAP ZOOM
+DEF_ATTR_RD_SIMPLE(Tilemap, ZoomX, float, p->trans.getScale().x)
+DEF_ATTR_RD_SIMPLE(Tilemap, ZoomY, float, p->trans.getScale().y)
 
 void Tilemap::setTileset(Bitmap *value)
 {
@@ -1250,6 +1398,27 @@ void Tilemap::setOY(int value)
 	p->origin.y = value;
 	p->zOrderDirty = true;
 	p->mapViewportDirty = true;
+}
+
+// TILEMAP ZOOM 
+void Tilemap::setZoomX(float value)
+{
+	guardDisposed();
+
+	if (p->trans.getScale().x == value)
+		return;
+
+	p->trans.setScale(Vec2(value, getZoomY()));
+}
+
+void Tilemap::setZoomY(float value)
+{
+	guardDisposed();
+
+	if (p->trans.getScale().y == value)
+		return;
+
+	p->trans.setScale(Vec2(getZoomX(), value));
 }
 
 void Tilemap::releaseResources()

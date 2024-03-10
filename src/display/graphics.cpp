@@ -65,10 +65,10 @@
 #include <climits>
 
 
-#define DEF_SCREEN_W (rgssVer == 1 ? 640 : 544)
-#define DEF_SCREEN_H (rgssVer == 1 ? 480 : 416)
+#define DEF_SCREEN_W 1280
+#define DEF_SCREEN_H 720
 
-#define DEF_FRAMERATE (rgssVer == 1 ? 40 : 60)
+#define DEF_FRAMERATE 60
 
 #define DEF_MAX_VIDEO_FRAMES 30
 #define VIDEO_DELAY 10

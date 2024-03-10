@@ -161,13 +161,17 @@ static void mriBindingInit() {
     viewportBindingInit();
     planeBindingInit();
     
-    if (rgssVer == 1) {
-        windowBindingInit();
-        tilemapBindingInit();
-    } else {
-        windowVXBindingInit();
-        tilemapVXBindingInit();
-    }
+    
+    // if (rgssVer == 1) {
+    //     windowBindingInit();
+    //     tilemapBindingInit();
+    // } else {
+    //     windowVXBindingInit();
+    //     tilemapVXBindingInit();
+    // }
+    // Just Astravia things
+    windowVXBindingInit();
+    tilemapBindingInit();
     
     inputBindingInit();
     audioBindingInit();
