@@ -1,5 +1,5 @@
 # I have no idea what I'm doing
-name: Automatic Build
+name: Debug AutoBuilds
 
 on:
   push:
@@ -50,10 +50,9 @@ jobs:
         shell: msys2 {0}
         run: |
           source windows/vars.sh
-          meson build
+          meson build -Dhide_console=false
           cd build
           ninja
-          strip ./mkxp-z.exe
 
       - name: Prepare archive
         shell: msys2 {0}
@@ -64,7 +63,7 @@ jobs:
           cp ../../windows/build-mingw64/bin/x64-msvcrt-ruby310.dll .
           cp -r ../../windows/build-mingw64/lib/ruby/3.1.0 .
           mv ./3.1.0 ./stdlib
-          cp ../mkxp-z.exe .
+          cp ../mkxp-z.exe ./Game.exe
           cp ../../mkxp.json .
 
       - uses: actions/upload-artifact@v3
@@ -109,6 +108,7 @@ jobs:
         run: |
           source linux/vars.sh
           meson build --bindir=. --prefix=$GITHUB_WORKSPACE/build/local
+          meson configure -Dhide_console=false
           cd build
           ninja
           ninja install
