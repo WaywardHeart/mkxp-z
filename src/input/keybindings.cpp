@@ -72,7 +72,7 @@ static const KbBindingData defaultKbBindings[] =
 	{ SDL_SCANCODE_UP,     Input::Up    },
 	{ SDL_SCANCODE_DOWN,   Input::Down  },
 	// RM Defaults
-	{ SDL_SCANCODE_X,      Input::X     },
+	{ SDL_SCANCODE_X,      Input::B     },
 	{ SDL_SCANCODE_Z,      Input::C     },
 	{ SDL_SCANCODE_RETURN, Input::C     },
 	{ SDL_SCANCODE_KP_0,   Input::B     },
@@ -89,7 +89,7 @@ static const KbBindingData defaultKbBindings[] =
 	{ SDL_SCANCODE_Q,      Input::X     },
 	{ SDL_SCANCODE_W,      Input::Y     },
 
-	{ SDL_SCANCODE_BACKSLASH, Input::Pause },
+	{ SDL_SCANCODE_P, Input::Pause },
 	{ SDL_SCANCODE_ESCAPE,    Input::Pause },
 
 	// Alt (One handed options)
