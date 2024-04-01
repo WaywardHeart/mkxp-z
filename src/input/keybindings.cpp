@@ -93,7 +93,7 @@ static const KbBindingData defaultKbBindings[] =
 	{ SDL_SCANCODE_ESCAPE,    Input::Pause },
 
 	// Alt (One handed options)
-	{ SDL_SCANCODE_DELETE,    Input::B     },
+	//{ SDL_SCANCODE_DELETE,    Input::B     },
 	{ SDL_SCANCODE_RCTRL,     Input::L    },
 	{ SDL_SCANCODE_KP_1,      Input::R    },
 	{ SDL_SCANCODE_END,       Input::A     },
