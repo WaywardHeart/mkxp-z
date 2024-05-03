@@ -379,6 +379,9 @@ struct BitmapPrivate
     
     static void ensureFormat(SDL_Surface *&surf, Uint32 format)
     {
+        if (!surf)
+            return;
+        
         if (surf->format->format == format)
             return;
         
@@ -1550,6 +1553,9 @@ void Bitmap::drawText(const IntRect &rect, const char *str, int align)
     else
         txtSurf = TTF_RenderUTF8_Blended(font, str, c);
     
+    if (!txtSurf)
+        throw Exception(Exception::SDLError, "Failed to render text: %s", TTF_GetError());
+    
     p->ensureFormat(txtSurf, SDL_PIXELFORMAT_ABGR8888);
     
     int rawTxtSurfH = txtSurf->h;
@@ -1570,6 +1576,9 @@ void Bitmap::drawText(const IntRect &rect, const char *str, int align)
             outline = TTF_RenderUTF8_Solid(font, str, co);
         else
             outline = TTF_RenderUTF8_Blended(font, str, co);
+        
+        if (!outline)
+            throw Exception(Exception::SDLError, "Failed to render text outline: %s", TTF_GetError());
         
         p->ensureFormat(outline, SDL_PIXELFORMAT_ABGR8888);
         SDL_Rect outRect = {OUTLINE_SIZE, OUTLINE_SIZE, txtSurf->w, txtSurf->h};
