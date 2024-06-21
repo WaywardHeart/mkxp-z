@@ -45,7 +45,7 @@ CMAKE_ARGS := \
 RUBY_CONFIGURE_ARGS := \
 	--enable-install-static-library \
 	--enable-shared \
-	--with-out-ext=fiddle,gdbm,win32ole,win32,ripper \
+	--with-out-ext=fiddle,gdbm,win32ole,win32 \
 	--with-static-linked-ext \
 	--disable-rubygems \
 	--disable-install-doc \
@@ -206,14 +206,11 @@ $(DOWNLOADS)/sdl2_image/cmakebuild/Makefile: $(DOWNLOADS)/sdl2_image/CMakeLists.
 	-DSDL2IMAGE_PNG_SAVE=yes \
 	-DSDL2IMAGE_PNG_SHARED=no \
 	-DSDL2IMAGE_JPG_SHARED=no \
-	-DSDL2IMAGE_BACKEND_IMAGEIO=no \
-	-DSDL2IMAGE_VENDORED=yes
+	-DSDL2IMAGE_BACKEND_IMAGEIO=no
 	
 
 $(DOWNLOADS)/sdl2_image/CMakeLists.txt:
-	$(CLONE) $(GITHUB)/mkxp-z/SDL_image $(DOWNLOADS)/sdl2_image -b mkxp-z; \
-	cd $(DOWNLOADS)/sdl2_image; \
-	./external/download.sh
+	$(CLONE) $(GITHUB)/mkxp-z/SDL_image $(DOWNLOADS)/sdl2_image -b mkxp-z
 
 
 # SDL_sound
@@ -296,7 +293,8 @@ $(DOWNLOADS)/openssl/Makefile: $(DOWNLOADS)/openssl/Configure
 	--openssldir="$(BUILD_PREFIX)"
 
 $(DOWNLOADS)/openssl/Configure:
-	$(CLONE) $(GITHUB)/openssl/openssl $(DOWNLOADS)/openssl --single-branch --branch OpenSSL_1_1_1i --depth 1
+	$(CLONE) $(GITHUB)/openssl/openssl $(DOWNLOADS)/openssl; \
+	cd $(DOWNLOADS)/openssl --single-branch --branch OpenSSL_1_1_1i --depth 1
 
 # Standard ruby
 ruby: init_dirs openssl $(LIBDIR)/libruby.3.1.dylib
