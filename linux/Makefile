@@ -210,26 +210,27 @@ $(DOWNLOADS)/sdl2/cmakebuild/Makefile: $(DOWNLOADS)/sdl2/CMakeLists.txt
 $(DOWNLOADS)/sdl2/CMakeLists.txt:
 	$(CLONE) $(GITHUB)/JaidenAlemni/SDL $(DOWNLOADS)/sdl2 -b mkxp-z-2.30.1
 
-# SDL2 (Image)
-sdl2image: init_dirs sdl2 libpng libjpeg $(LIBDIR)/libSDL2_image.a
+# SDL_image
+sdl2image: init_dirs sdl2 $(LIBDIR)/libSDL2_image.a
 
-$(LIBDIR)/libSDL2_image.a: $(DOWNLOADS)/sdl2_image/Makefile
-	cd $(DOWNLOADS)/sdl2_image; \
+$(LIBDIR)/libSDL2_image.a: $(DOWNLOADS)/sdl2_image/cmakebuild/Makefile
+	cd $(DOWNLOADS)/sdl2_image/cmakebuild; \
 	make -j$(NPROC); make install
 
-$(DOWNLOADS)/sdl2_image/Makefile: $(DOWNLOADS)/sdl2_image/configure
+$(DOWNLOADS)/sdl2_image/cmakebuild/Makefile: $(DOWNLOADS)/sdl2_image/CMakeLists.txt
+	cd $(DOWNLOADS)/sdl2_image; mkdir -p cmakebuild; cd cmakebuild; \
+	$(CMAKE) \
+	-DBUILD_SHARED_LIBS=no \
+	-DSDL2IMAGE_JPG_SAVE=yes \
+	-DSDL2IMAGE_PNG_SAVE=yes \
+	-DSDL2IMAGE_PNG_SHARED=no \
+	-DSDL2IMAGE_JPG_SHARED=no \
+	-DSDL2IMAGE_VENDORED=yes
+
+$(DOWNLOADS)/sdl2_image/CMakeLists.txt:
+	$(CLONE) $(GITHUB)/JaidenAlemni/SDL_image $(DOWNLOADS)/sdl2_image -b mkxp-z-2.6.3; \
 	cd $(DOWNLOADS)/sdl2_image; \
-	LIBPNG_LIBS="-L$(LIBDIR) -lpng" LIBPNG_CFLAGS="-I$(INCLUDEDIR)" \
-	$(CONFIGURE) --enable-static=true --enable-shared=false \
-	--enable-png=yes --enable-png-shared=no \
-	--enable-jpg=yes --enable-jpg-shared=no \
-	--enable-webp=no $(SDL2_IMAGE_FLAGS)
-
-$(DOWNLOADS)/sdl2_image/configure: $(DOWNLOADS)/sdl2_image/autogen.sh
-	cd $(DOWNLOADS)/sdl2_image; ./autogen.sh
-
-$(DOWNLOADS)/sdl2_image/autogen.sh:
-	$(CLONE) $(GITHUB)/mkxp-z/SDL_image_old $(DOWNLOADS)/sdl2_image -b mkxp-z
+	./external/download.sh
 
 # SDL_sound
 sdlsound: init_dirs sdl2 libogg libvorbis $(LIBDIR)/libSDL2_sound.a

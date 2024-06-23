@@ -199,7 +199,7 @@ $(DOWNLOADS)/sdl2_image/cmakebuild/Makefile: $(DOWNLOADS)/sdl2_image/CMakeLists.
 	-DSDL2IMAGE_VENDORED=yes
 
 $(DOWNLOADS)/sdl2_image/CMakeLists.txt:
-	$(CLONE) $(GITHUB)/mkxp-z/SDL_image $(DOWNLOADS)/sdl2_image -b mkxp-z; \
+	$(CLONE) $(GITHUB)/JaidenAlemni/SDL_image $(DOWNLOADS)/sdl2_image -b mkxp-z-2.6.3; \
 	cd $(DOWNLOADS)/sdl2_image; \
 	./external/download.sh
 

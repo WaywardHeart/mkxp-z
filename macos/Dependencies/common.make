@@ -210,7 +210,7 @@ $(DOWNLOADS)/sdl2_image/cmakebuild/Makefile: $(DOWNLOADS)/sdl2_image/CMakeLists.
 	
 
 $(DOWNLOADS)/sdl2_image/CMakeLists.txt:
-	$(CLONE) $(GITHUB)/mkxp-z/SDL_image $(DOWNLOADS)/sdl2_image -b mkxp-z
+	$(CLONE) $(GITHUB)/JaidenAlemni/SDL_image $(DOWNLOADS)/sdl2_image -b mkxp-z-2.6.3
 
 
 # SDL_sound
