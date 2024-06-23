@@ -13,10 +13,10 @@ BLOCK "StringFileInfo"
 {
 BLOCK "040904b0"
 {
-VALUE "FileVersion",        "2.4.2\0"
+VALUE "FileVersion",        "2.5.0\0"
 VALUE "OriginalFilename",   "mkxp-z.exe\0"
 VALUE "ProductName",        "mkxp-z\0"
-VALUE "ProductVersion",     "2.4.2\0"
+VALUE "ProductVersion",     "2.5.0\0"
 }
 }
 BLOCK "VarFileInfo"

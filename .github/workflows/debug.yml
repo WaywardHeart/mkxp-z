@@ -1,5 +1,5 @@
 # I have no idea what I'm doing
-name: Distributed AutoBuilds
+name: Debug AutoBuilds
 
 on:
   push:
