@@ -1,5 +1,5 @@
 # I have no idea what I'm doing
-name: Debug AutoBuilds
+name: Distributed AutoBuilds
 
 on:
   push:
@@ -62,6 +62,10 @@ jobs:
           cp /mingw64/bin/zlib1.dll .
           cp ../../windows/build-mingw64/bin/x64-msvcrt-ruby310.dll .
           cp -r ../../windows/build-mingw64/lib/ruby/3.1.0 .
+          cp ../../vendor/ANGLE/libEGL.dll .
+          cp ../../vendor/ANGLE/libGLESv2.dll .
+          cp ../../vendor/ANGLE/vulkan-1.dll .
+          cp ../../vendor/ANGLE/COPYING ./COPYING_ANGLE
           mv ./3.1.0 ./stdlib
           cp ../mkxp-z.exe ./Game.exe
           cp ../../mkxp.json .
@@ -118,6 +122,9 @@ jobs:
           cp -r ../../linux/build-x86_64/lib/ruby/3.1.0 .
           mv ./3.1.0 ./stdlib
           cp ../../mkxp.json .
+          cp ../../vendor/ANGLE/libGLESv2.so ./lib64
+          cp ../../vendor/ANGLE/libEGL.so.1 ./lib64
+          cp ../../vendor/ANGLE/libvulkan.so.1 ./lib64
           cd ..
           zip -r local.zip local
 
