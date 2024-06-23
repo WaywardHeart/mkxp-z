@@ -246,7 +246,7 @@ $(DOWNLOADS)/sdl2_ttf/configure: $(DOWNLOADS)/sdl2_ttf/autogen.sh
 	cd $(DOWNLOADS)/sdl2_ttf; ./autogen.sh
 
 $(DOWNLOADS)/sdl2_ttf/autogen.sh:
-	$(CLONE) $(GITHUB)/JaidenAlemni/SDL_ttf $(DOWNLOADS)/sdl2_ttf -b mkxp-z-2.20.2
+	$(CLONE) $(GITHUB)/JaidenAlemni/SDL_ttf $(DOWNLOADS)/sdl2_ttf -b mkxp-z-2.20
 
 # Freetype (dependency of SDL2_ttf)
 freetype: init_dirs $(LIBDIR)/libfreetype.a

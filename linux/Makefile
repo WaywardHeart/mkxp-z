@@ -260,7 +260,7 @@ $(DOWNLOADS)/sdl2_ttf/cmakebuild/Makefile: $(DOWNLOADS)/sdl2_ttf/CMakeLists.txt
 	$(CMAKE) -DBUILD_SHARED_LIBS=no
 
 $(DOWNLOADS)/sdl2_ttf/CMakeLists.txt:
-	$(CLONE) $(GITHUB)/JaidenAlemni/sdl_ttf $(DOWNLOADS)/sdl2_ttf -b mkxp-z-2.20.2
+	$(CLONE) $(GITHUB)/JaidenAlemni/sdl_ttf $(DOWNLOADS)/sdl2_ttf -b mkxp-z-2.20
 
 # Freetype (dependency of SDL2_ttf)
 freetype: init_dirs $(LIBDIR)/libfreetype.a
