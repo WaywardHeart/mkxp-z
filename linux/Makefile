@@ -246,7 +246,7 @@ $(DOWNLOADS)/sdl_sound/cmakebuild/Makefile: $(DOWNLOADS)/sdl_sound/CMakeLists.tx
 	-DSDLSOUND_BUILD_TEST=false
 
 $(DOWNLOADS)/sdl_sound/CMakeLists.txt:
-	$(CLONE) $(GITHUB)/mkxp-z/SDL_sound $(DOWNLOADS)/sdl_sound -b git
+	$(CLONE) $(GITHUB)/JaidenAlemni/SDL_sound $(DOWNLOADS)/sdl_sound -b mkxp-z-2.0.1
 
 # SDL2 (ttf)
 sdl2ttf: init_dirs sdl2 freetype $(LIBDIR)/libSDL2_ttf.a
