@@ -179,7 +179,7 @@ $(DOWNLOADS)/libpng/Makefile: $(DOWNLOADS)/libpng/configure
 	--enable-shared=no --enable-static=yes
 
 $(DOWNLOADS)/libpng/configure:
-	$(CLONE) $(GITHUB)/mkxp-z/libpng $(DOWNLOADS)/libpng
+	$(CLONE) $(GITHUB)/JaidenAlemni/libpng $(DOWNLOADS)/libpng --single-branch --branch v1.6.38 --depth 1 
 
 # libjpeg
 libjpeg: init_dirs $(LIBDIR)/libjpeg.a
