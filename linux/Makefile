@@ -277,7 +277,7 @@ $(DOWNLOADS)/freetype/configure: $(DOWNLOADS)/freetype/autogen.sh
 	cd $(DOWNLOADS)/freetype; ./autogen.sh
 
 $(DOWNLOADS)/freetype/autogen.sh:
-	$(CLONE) $(GITHUB)/mkxp-z/freetype2 $(DOWNLOADS)/freetype
+	$(CLONE) $(GITHUB)/JaidenAlemni/Freetype2 $(DOWNLOADS)/freetype
 
 # OpenAL
 openal: init_dirs libogg $(LIBDIR)/libopenal.a
