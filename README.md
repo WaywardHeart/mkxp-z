@@ -2,9 +2,9 @@
 
 This is a fork of **[mkxp-z](https://github.com/mkxp-z/mkxp-z)** created for use in [Legends of Astravia](https://www.astraviagame.com/). *Most* dependencies have also been copied over to my personal account. 
 
-**It is highly advised you don't fork from this repo as changes are done exclusively to support this game and its development.** Of course, you are welcome to reference, cherry-pick, etc. at your leisure. I also am not your dad and can't tell you what to do. You have been warned.
+**It is highly advised you don't fork from this repo as changes are done exclusively to support my game and its development.** Of course, you are welcome to reference, cherry-pick, etc. at your leisure. I also am not your dad and can't tell you what to do, just know I won't do anything about it if it doesn't work / break / etc. in anything outside of LoA.
 
-Please refer to the original fork for additional info, forking yourself, etc. 
+Please refer to the original mkxp-z repo for additional info, forking yourself, etc. 
 
 --- 
 
