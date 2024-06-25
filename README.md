@@ -26,10 +26,11 @@ Please refer to the original fork for additional info, forking yourself, etc.
 | ✅ | SDL2 | JaidenAlemni/SDL | 2.30.1 | mkxp's blood and guts |
 | ✅ | SDL_image | JaidenAlemni/SDL_image | 2.6.3 | Image library for SDL |
 | ✅ | libpng | JaidenAlemni/libpng | 1.6.38 | SDL_Image dependency |
+| ❌ | libjpeg | mkxp-z/libjpeg-turbo | ? | SDL_Image dependency |
 | ✅ | SDL_Sound | JaidenAlemni/SDL_sound | 2.0.1 | Soundfile decoding library |
 | ❌ | Theora | xiph/theora | 1.2.0alpha1 | Video playback |
 | ✅ | Vorbis | JaidenAlemni/vorbis | 1.3.7 | Theora+SDL_sound dependency | 
-| ❌ | libogg | mkxp-z/ogg | 1.3.4 | Theora+SDL_sound dependency |
+| ✅ | libogg | JaidenAlemni/ogg | 1.3.5 | Theora+SDL_sound dependency |
 | ❌ | OpenAL | mkxp-z/openal-soft | 1.22.2 | 3D Audio API | 
 | ✅ | SDL_ttf | JaidenAlemni/SDL_ttf | 2.0.15(?) | TTF Font library for SDL | 
 | ❌ | Freetype | mkxp-z/freetype2 | 2.13.0 | SDL_ttf dependency |
