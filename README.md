@@ -31,9 +31,9 @@ Please refer to the original fork for additional info, forking yourself, etc.
 | ❌ | Theora | xiph/theora | 1.2.0alpha1 | Video playback |
 | ✅ | Vorbis | JaidenAlemni/vorbis | 1.3.7 | Theora+SDL_sound dependency | 
 | ✅ | libogg | JaidenAlemni/ogg | 1.3.5 | Theora+SDL_sound dependency |
-| ❌ | OpenAL | mkxp-z/openal-soft | 1.22.2 | 3D Audio API | 
+| ✅  | OpenAL | JaidenAlemni/openal-soft | 1.22.2 | 3D Audio API | 
 | ✅ | SDL_ttf | JaidenAlemni/SDL_ttf | 2.0.15(?) | TTF Font library for SDL | 
-| ❌ | Freetype | mkxp-z/freetype2 | 2.13.0 | SDL_ttf dependency |
+| ✅ | Freetype | JaidenAlemni/freetype2 | 2.13.0 | SDL_ttf dependency |
 | ❌ | fluidsynth | mkxp-z/fluidsynth-sans-glib | 2.0.3 | MIDI synthesizer |
 | ✅ | PhysFS | JaidenAlemni/physfs | 3.2.0 | Archive I/O |
 | ❌ | uchardet | mkxp-z/uchardet | 0.0.6 | Text encoding |
