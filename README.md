@@ -38,7 +38,7 @@ Please refer to the original fork for additional info, forking yourself, etc.
 | ✅ | PhysFS | JaidenAlemni/physfs | 3.2.0 | Archive I/O |
 | ❌ | uchardet | mkxp-z/uchardet | 0.0.6 | Text encoding |
 | ❌ | pixman | mkxp-z/pixman | 0.38.0 | Image compositing API |
-| ❌ | OpenSSL | openssl/openssl | 1.1.1 | For HTTPS? I think? |
+| ❌ | OpenSSL | openssl/openssl | 1.1.1 | HTTPS n' stuff |
 
 
 

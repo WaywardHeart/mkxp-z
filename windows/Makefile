@@ -102,7 +102,7 @@ $(DOWNLOADS)/ogg/configure: $(DOWNLOADS)/ogg/autogen.sh
 	cd $(DOWNLOADS)/ogg; ./autogen.sh
 
 $(DOWNLOADS)/ogg/autogen.sh:
-	$(CLONE) $(GITHUB)/mkxp-z/ogg $(DOWNLOADS)/ogg -b mkxp-z-1.3.5
+	$(CLONE) $(GITHUB)/JaidenAlemni/ogg $(DOWNLOADS)/ogg -b mkxp-z-1.3.5
 
 # Pixman
 pixman: init_dirs libpng $(LIBDIR)/libpixman-1.a
