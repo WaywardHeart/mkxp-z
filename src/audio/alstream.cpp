@@ -192,6 +192,7 @@ struct ALStreamOpenHandler : FileSystem::OpenHandler
 {
 	bool looped;
 	ALDataSource *source;
+	int fallbackMode;
 	std::string errorMsg;
 
 	ALStreamOpenHandler(bool looped)
