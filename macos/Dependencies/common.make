@@ -228,7 +228,7 @@ $(DOWNLOADS)/sdl_sound/cmakebuild/Makefile: $(DOWNLOADS)/sdl_sound/CMakeLists.tx
 	-DSDLSOUND_DECODER_COREAUDIO=false
 
 $(DOWNLOADS)/sdl_sound/CMakeLists.txt:
-	$(CLONE) $(GITHUB)/JaidenAlemni/SDL_sound $(DOWNLOADS)/sdl_sound -b mkxp-z-2.0.1
+	$(CLONE) $(GITHUB)/JaidenAlemni/SDL_sound $(DOWNLOADS)/sdl_sound -b mkxp-z-2.0.3
 
 	
 # SDL2 (ttf)
